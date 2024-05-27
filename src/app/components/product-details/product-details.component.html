@@ -1,0 +1,16 @@
+<div class="container" *ngIf="product">
+    <h2>{{ product.title }}</h2>
+    <p><strong>Description:</strong> {{ product.description }}</p>
+    <p><strong>Price:</strong> ${{ product.price }}</p>
+    <p><strong>Category Id:</strong> {{ product.categoryId }}</p>
+    <div>
+      <strong>Images:</strong>
+      <ul>
+        <li *ngFor="let image of product.images">
+          <img [src]="image" alt="{{ product.title }}" style="max-width: 100px; margin-right: 10px;">
+        </li>
+      </ul>
+    </div>
+    <a routerLink="/" class="button back-button">Back to list</a>
+  </div>
+  

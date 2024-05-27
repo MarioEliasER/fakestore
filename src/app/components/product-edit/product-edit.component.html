@@ -1,0 +1,21 @@
+<div class="container" *ngIf="product">
+    <form (ngSubmit)="updateProduct()">
+      <label for="title">Title:</label>
+      <input id="title" [(ngModel)]="product.title" name="title" required>
+  
+      <label for="description">Description:</label>
+      <textarea id="description" [(ngModel)]="product.description" name="description" required></textarea>
+  
+      <label for="price">Price:</label>
+      <input id="price" type="number" [(ngModel)]="product.price" name="price" required>
+      
+      <label for="categoryId">Category ID:</label>
+      <input id="categoryId" type="number" [(ngModel)]="product.categoryId" name="categoryId" required>
+  
+      <label for="images">Image URLs:</label>
+      <input id="images" [(ngModel)]="imageUrls" name="images" required>      
+  
+      <button type="submit" class="button edit">Edit</button>
+    </form>
+    <a routerLink="/" class="button back-button">Back to list</a>
+</div>

@@ -1,0 +1,14 @@
+<div class="container">
+    <h2>Product List</h2>
+    <a routerLink="/create" class="button create">Create New Product</a>
+    <ul>
+      <li *ngFor="let product of products">
+        <a [routerLink]="['/product', product.id]">{{ product.title }}</a>
+        <div>
+          <a [routerLink]="['/edit', product.id]" class="button edit">Edit</a>
+          <a (click)="deleteProduct(product.id)" class="button delete">Delete</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  

@@ -1,0 +1,23 @@
+<div class="container">
+    <h2>Create Product</h2>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <form (ngSubmit)="createProduct()">
+      <label for="title">Title:</label>
+      <input id="title" [(ngModel)]="product.title" name="title" required>
+  
+      <label for="price">Price:</label>
+      <input id="price" type="number" [(ngModel)]="product.price" name="price" required>
+
+      <label for="description">Description:</label>
+      <textarea id="description" [(ngModel)]="product.description" name="description" required></textarea>
+      
+      <label for="categoryId">Category ID:</label>
+      <input id="categoryId" type="number" [(ngModel)]="product.categoryId" name="categoryId" required>
+  
+      <label for="images">Image URLs (comma separated):</label>
+      <input id="images" [(ngModel)]="imageList" name="images" required>
+
+      <button type="submit" class="button create">Create</button>
+    </form>
+    <a routerLink="/" class="button back-button">Back to list</a>
+</div>
