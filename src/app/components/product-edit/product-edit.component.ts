@@ -34,42 +34,29 @@ export class ProductEditComponent implements OnInit {
     images: [],
   };
 
-constructor(
-    private route: ActivatedRoute,
-    private productService: ProductService,
-    private router: Router
-) {}
+  constructor(
+      private route: ActivatedRoute,
+      private productService: ProductService,
+      private router: Router
+  ) {}
 
-ngOnInit(): void {
-  const id = Number(this.route.snapshot.params['id']);
-  this.productService.getProductById(id).subscribe((data : any) => {
-    if (!data){
-      this.router.navigate(['/']);
-    }
-    this.product = data;
-  });
-}
-
-categories: Category[] = []
-
-updateProduct() {
-  if (this.product) {
-    const updatedProduct = {
-      title: this.product.title,
-      price: this.product.price,
-      description: this.product.description,
-      categoryId: this.product.category.id,
-      images: [this.product.images]
-    };
-
-    this.productService.updateProduct(this.product.id, this.product).subscribe(
-      (data : any) => {
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.params['id']);
+    this.productService.getProductById(id).subscribe((data : any) => {
+      if (!data){
         this.router.navigate(['/']);
-      },
-      (error) => {
-        console.log(error);
       }
-    )
+      this.product = data;
+    });
   }
-}  
+  
+  updateProduct() {
+    if (this.product) {
+      this.productService.updateProduct(this.product.id, this.product).subscribe(
+        () => {
+          this.router.navigate(['/']);
+        }
+      )
+    }
+  }  
 }

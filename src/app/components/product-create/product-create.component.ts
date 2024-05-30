@@ -17,39 +17,32 @@ export class ProductCreateComponent {
     description: '',
     categoryId: 0,
     images: []
-  };
-  errorMessage: string = '';
-  imageList: string = '';
+};
+errorMessage: string = '';
 
-  constructor(
+constructor(
     private productService: ProductService,
     private router: Router,
     private categoryService: CategoryService
-  ) {
+) {
     this.categoryService.getCategories().subscribe((data : any) =>{
       this.categories = data;
     })
-  }
+}
 
-  createProduct(): void {
-    const imagesArray = this.imageList.split(',').map(image => image.trim());
-    this.product.images = imagesArray.filter(image => image);
+createProduct(): void {
+  
+  console.log(this.product);
+  const newProduct = {
+    title: this.product.title,
+    price: this.product.price,
+    description: this.product.description,
+    categoryId: this.product.categoryId,
+    images: [this.product.images],
+  };
 
-    if (!Array.isArray(this.product.images) || this.product.images.length === 0) {
-      this.errorMessage = 'Images are required and must be an array.';
-      return;
-    }
-    console.log(this.product);
-    const newProduct = {
-      title: this.product.title,
-      price: this.product.price,
-      description: this.product.description,
-      categoryId: this.product.categoryId,
-      images: [this.product.images],
-    };
-
-    this.productService.createProduct(newProduct).subscribe(() => {
-      this.router.navigate(['/']);
-    });
+  this.productService.createProduct(newProduct).subscribe(() => {
+    this.router.navigate(['/']);
+  });
   }
 }
