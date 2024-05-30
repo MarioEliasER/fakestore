@@ -13,14 +13,17 @@ export class ProductListComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe((products) => {
+    this.productService.getProducts().subscribe((products : any) => {
       this.products = products;
     });
   }
 
   deleteProduct(id: number): void {
-    this.productService.deleteProduct(id).subscribe(() => {
-      this.products = this.products.filter(product => product.id !== id);
-    });
+    const confirmed = window.confirm('Are you sure you want to delete this product?');
+    if (confirmed) {
+      this.productService.deleteProduct(id).subscribe(() => {
+        this.products = this.products.filter(product => product.id !== id);
+      });
+    }
   }
 }

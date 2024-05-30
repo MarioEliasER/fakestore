@@ -1,7 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/product.interface';
+import { Category, Product } from '../../models/product.interface';
+import { error } from 'console';
+
+interface ProductDetails {
+  title?: string;
+  price?: number;
+  description?: string;
+  category?: {
+    id: number;
+    name: string;
+  };
+  images?: string[];
+}
 
 @Component({
   selector: 'app-product-edit',
@@ -9,32 +21,55 @@ import { Product } from '../../models/product.interface';
   styleUrls: ['./product-edit.component.css']
 })
 export class ProductEditComponent implements OnInit {
-  product: Product | undefined;
-  imageUrls: string[] = [];
+  product: Product = {
+    id: 0,
+    title: '',
+    price: 0,
+    description: '',
+    category: {
+      id: 0,
+      name: '',
+      image: '',
+    },
+    images: [],
+  };
 
-  constructor(
+constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private router: Router
-  ) {}
+) {}
 
-  ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.productService.getProductById(id).subscribe((product) => {
-      this.product = product;
-      // Si el producto ya tiene imágenes, se pueden inicializar imageUrls con esas imágenes
-      if (product.images) {
-        this.imageUrls = product.images; // No es necesario realizar ningún procesamiento, ya que product.images es un arreglo de strings
-      }
-    });
-  }
-
-  updateProduct(): void {
-    if (this.product) {
-      this.product.images = this.imageUrls; // Asignar el arreglo de URLs de imagen
-      this.productService.updateProduct(this.product).subscribe(() => {
-        this.router.navigate(['/']);
-      });
+ngOnInit(): void {
+  const id = Number(this.route.snapshot.params['id']);
+  this.productService.getProductById(id).subscribe((data : any) => {
+    if (!data){
+      this.router.navigate(['/']);
     }
-  }  
+    this.product = data;
+  });
+}
+
+categories: Category[] = []
+
+updateProduct() {
+  if (this.product) {
+    const updatedProduct = {
+      title: this.product.title,
+      price: this.product.price,
+      description: this.product.description,
+      categoryId: this.product.category.id,
+      images: [this.product.images]
+    };
+
+    this.productService.updateProduct(this.product.id, this.product).subscribe(
+      (data : any) => {
+        this.router.navigate(['/']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+}  
 }
